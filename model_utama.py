@@ -42,7 +42,7 @@ st.markdown("""
 
 # Judul
 st.title("Prediksi Status Gizi Balita Menggunakan Algoritma CatBoost dan KNN")
-st.markdown("Lakukan pengisian data berikut untuk mengetahui prediksi status gizi balita.")
+st.markdown("Lakukan pengisian data berikut untuk mengetahui status gizi balita.")
 
 # Pilih algoritma dengan radio button
 algoritma = st.radio("Pilih Algoritma yang akan digunakan:", ("CatBoost", "KNN"), key="algoritma")
@@ -128,7 +128,7 @@ def convert_and_validate_int(value, min_val, max_val, field_name):
     return val
 
 # Tombol Tampilkan Hasil Prediksi di bawah form input
-if st.button("Tampilkan Hasil Prediksi"):
+if st.button("Hasil Prediksi"):
     # Cek dulu dropdown apakah ada yang belum dipilih
     if "" in (Jenis_Kelamin, Status_Pemberian_ASI, Status_Tinggi_Badan, Status_Berat_Badan):
         st.warning("Mohon lengkapi semua pilihan terlebih dahulu.")
@@ -165,4 +165,4 @@ def clear_inputs():
     for key in default_values:
         st.session_state[key] = default_values[key]
 
-st.button("Kosongkan Form", on_click=clear_inputs)
+st.button("Kosongkan Form untuk Mengisi Kembali", on_click=clear_inputs)
