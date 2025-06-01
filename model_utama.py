@@ -64,21 +64,22 @@ for key in default_values:
     if key not in st.session_state:
         st.session_state[key] = default_values[key]
 
-# Kolom input (2 kolom)
-col1, col2 = st.columns(2)
+# Kolom input (3 kolom)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     Jenis_Kelamin = st.selectbox("Pilih Jenis Kelamin", ["", "Laki-laki", "Perempuan"], key="Jenis_Kelamin")
-
     Usia_input = st.text_input("Masukkan Usia (bulan)", placeholder="Contoh: 24", key="Usia_input")
-    Berat_Badan_Lahir_input = st.text_input("Berat Badan Lahir (kg)", placeholder="Contoh: 3.2", key="Berat_Badan_Lahir_input")
-    Tinggi_Badan_Lahir_input = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0", key="Tinggi_Badan_Lahir_input")
+    Status_Pemberian_ASI = st.selectbox("Status Pemberian ASI", ["", "Ya", "Tidak"], key="Status_Pemberian_ASI")
 
 with col2:
+    Berat_Badan_Lahir_input = st.text_input("Berat Badan Lahir (kg)", placeholder="Contoh: 3.2", key="Berat_Badan_Lahir_input")
+    Tinggi_Badan_Lahir_input = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0", key="Tinggi_Badan_Lahir_input")
+    Status_Tinggi_Badan = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["", "Sangat pendek", "Pendek", "Normal", "Tinggi"], key="Status_Tinggi_Badan")
+
+with col3:
     Berat_Badan_input = st.text_input("Berat Badan Saat Ini (kg)", placeholder="Contoh: 12.5", key="Berat_Badan_input")
     Tinggi_Badan_input = st.text_input("Tinggi Badan Saat Ini (cm)", placeholder="Contoh: 75.0", key="Tinggi_Badan_input")
-    Status_Pemberian_ASI = st.selectbox("Status Pemberian ASI", ["", "Ya", "Tidak"], key="Status_Pemberian_ASI")
-    Status_Tinggi_Badan = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["", "Sangat pendek", "Pendek", "Normal", "Tinggi"], key="Status_Tinggi_Badan")
     Status_Berat_Badan = st.selectbox("Kondisi Berat Badan Saat Ini", ["", "Berat badan sangat kurang", "Berat badan kurang", "Berat badan normal", "Risiko berat badan lebih"], key="Status_Berat_Badan")
 
 # Mapping tetap sama
