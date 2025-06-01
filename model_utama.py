@@ -43,13 +43,13 @@ with col1:
     Jenis_Kelamin = st.selectbox("Pilih Jenis Kelamin", ["", "Laki-laki", "Perempuan"])
     Usia = st.number_input("Masukkan Usia (bulan)", min_value=0, step=1, format="%d")
     Berat_Badan_Lahir = st.number_input("Berat Badan Lahir (kg)", min_value=0.0, step=0.1, format="%.1f",
-                                        help="Contoh: 2.5, 3.0, 3.2")
+                                        help="Contoh: (2,5), (3,0), (3,2)")
     Tinggi_Badan_Lahir = st.number_input("Tinggi Badan Lahir (cm)", min_value=0.0, step=0.1, format="%.1f",
-                                         help="Contoh: 48.0, 49.1, 50.0")
+                                         help="Contoh: (48,0), (49,1), (50,0")
     Berat_Badan = st.number_input("Berat Badan Saat Ini (kg)", min_value=0.0, step=0.1, format="%.1f",
-                                  help="Contoh: 8.0, 9.2, 10.5")
+                                  help="Contoh: (8,0), (9,2), (10,5)")
     Tinggi_Badan = st.number_input("Tinggi Badan Saat Ini (cm)", min_value=0.0, step=0.1, format="%.1f",
-                                   help="Contoh: 70.0, 72.5, 75.1")
+                                   help="Contoh: (70,0), (72,5), (75,1)")
 with col2:
     Status_Pemberian_ASI = st.selectbox("Status Pemberian ASI", ["", "Ya", "Tidak"])
     Status_Tinggi_Badan = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["", "Sangat pendek", "Pendek", "Normal", "Tinggi"])
