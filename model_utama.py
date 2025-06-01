@@ -90,10 +90,25 @@ status_gizi_map = {
     5: 'Obesitas'
 }
 
-# Tombol Prediksi
 if st.button("Tampilkan Hasil Prediksi"):
+    # Cek apakah ada input dropdown yang kosong
     if "" in (Jenis_Kelamin, Status_Pemberian_ASI, Status_Tinggi_Badan, Status_Berat_Badan):
         st.warning("Mohon lengkapi semua pilihan terlebih dahulu.")
+    # Filter rentang usia
+    elif not (1 <= Usia <= 59):
+        st.warning("Usia harus antara 1 sampai 59 bulan.")
+    # Filter rentang berat badan lahir
+    elif not (1.8 <= Berat_Badan_Lahir <= 4.0):
+        st.warning("Berat Badan Lahir harus antara 1.8 kg sampai 4.0 kg.")
+    # Filter rentang tinggi badan lahir
+    elif not (42.0 <= Tinggi_Badan_Lahir <= 53.0):
+        st.warning("Tinggi Badan Lahir harus antara 42.0 cm sampai 53.0 cm.")
+    # Filter rentang berat badan saat ini
+    elif not (2.9 <= Berat_Badan <= 24.5):
+        st.warning("Berat Badan Saat Ini harus antara 2.9 kg sampai 24.5 kg.")
+    # Filter rentang tinggi badan saat ini
+    elif not (49.0 <= Tinggi_Badan <= 111.0):
+        st.warning("Tinggi Badan Saat Ini harus antara 49.0 cm sampai 111.0 cm.")
     else:
         # Load model sesuai pilihan algoritma
         model_prediksi = load_model(algoritma)
