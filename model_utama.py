@@ -22,7 +22,7 @@ st.markdown("""
         h1 {
             color: #0d47a1;
         }
-        .stSelectbox label, .stNumberInput label {
+        .stSelectbox label, .stTextInput label {
             font-weight: bold;
             color: #0d47a1;
         }
@@ -52,15 +52,13 @@ col1, col2 = st.columns(2)
 
 with col1:
     Jenis_Kelamin = st.selectbox("Pilih Jenis Kelamin", ["", "Laki-laki", "Perempuan"])
-    Usia = st.number_input("Masukkan Usia (bulan)", min_value=0, step=1, format="%d")
-    Berat_Badan_Lahir = st.number_input("Berat Badan Lahir (kg)", min_value=0.0, step=0.1, format="%.1f",
-                                        help="Contoh: 2,5")
-    Tinggi_Badan_Lahir = st.number_input("Tinggi Badan Lahir (cm)", min_value=0.0, step=0.1, format="%.1f",
-                                         help="Contoh: 48,0")
-    Berat_Badan = st.number_input("Berat Badan Saat Ini (kg)", min_value=0.0, step=0.1, format="%.1f",
-                                  help="Contoh: 10,5")
-    Tinggi_Badan = st.number_input("Tinggi Badan Saat Ini (cm)", min_value=0.0, step=0.1, format="%.1f",
-                                   help="Contoh: 70.0")
+
+    Usia_input = st.text_input("Masukkan Usia (bulan)", placeholder="Contoh: 24")
+    Berat_Badan_Lahir_input = st.text_input("Berat Badan Lahir (kg)", placeholder="Contoh: 3.2")
+    Tinggi_Badan_Lahir_input = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0")
+    Berat_Badan_input = st.text_input("Berat Badan Saat Ini (kg)", placeholder="Contoh: 12.5")
+    Tinggi_Badan_input = st.text_input("Tinggi Badan Saat Ini (cm)", placeholder="Contoh: 75.0")
+
 with col2:
     Status_Pemberian_ASI = st.selectbox("Status Pemberian ASI", ["", "Ya", "Tidak"])
     Status_Tinggi_Badan = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["", "Sangat pendek", "Pendek", "Normal", "Tinggi"])
@@ -90,37 +88,56 @@ status_gizi_map = {
     5: 'Obesitas'
 }
 
+def convert_and_validate_float(value, min_val, max_val, field_name):
+    try:
+        val = float(value.replace(',', '.'))  # Mengatasi input desimal dengan koma
+    except:
+        st.warning(f"Input untuk {field_name} harus berupa angka yang valid.")
+        return None
+    if not (min_val <= val <= max_val):
+        st.warning(f"Input untuk {field_name} harus antara {min_val} sampai {max_val}.")
+        return None
+    return val
+
+def convert_and_validate_int(value, min_val, max_val, field_name):
+    try:
+        val = int(value)
+    except:
+        st.warning(f"Input untuk {field_name} harus berupa angka bulat yang valid.")
+        return None
+    if not (min_val <= val <= max_val):
+        st.warning(f"Input untuk {field_name} harus antara {min_val} sampai {max_val}.")
+        return None
+    return val
+
 if st.button("Tampilkan Hasil Prediksi"):
-    # Cek dulu apakah ada pilihan dropdown yang belum dipilih
+    # Cek dulu dropdown apakah ada yang belum dipilih
     if "" in (Jenis_Kelamin, Status_Pemberian_ASI, Status_Tinggi_Badan, Status_Berat_Badan):
         st.warning("Mohon lengkapi semua pilihan terlebih dahulu.")
-    # Cek validasi rentang untuk input numerik
-    elif not (1 <= Usia <= 59):
-        st.warning("Usia harus antara 1 sampai 59 bulan.")
-    elif not (1.8 <= Berat_Badan_Lahir <= 4.0):
-        st.warning("Berat Badan Lahir harus antara 1.8 kg sampai 4.0 kg.")
-    elif not (42.0 <= Tinggi_Badan_Lahir <= 53.0):
-        st.warning("Tinggi Badan Lahir harus antara 42.0 cm sampai 53.0 cm.")
-    elif not (2.9 <= Berat_Badan <= 24.5):
-        st.warning("Berat Badan Saat Ini harus antara 2.9 kg sampai 24.5 kg.")
-    elif not (49.0 <= Tinggi_Badan <= 111.0):
-        st.warning("Tinggi Badan Saat Ini harus antara 49.0 cm sampai 111.0 cm.")
     else:
-        # Jika semua valid, jalankan prediksi
-        model_prediksi = load_model(algoritma)
-        
-        input_data = [[
-            jenis_kelamin_map[Jenis_Kelamin],
-            Usia,
-            Berat_Badan_Lahir,
-            Tinggi_Badan_Lahir,
-            Berat_Badan,
-            Tinggi_Badan,
-            asi_map[Status_Pemberian_ASI],
-            tinggi_badan_map[Status_Tinggi_Badan],
-            berat_badan_map[Status_Berat_Badan]
-        ]]
+        # Validasi input numerik
+        Usia = convert_and_validate_int(Usia_input, 1, 59, "Usia (bulan)")
+        Berat_Badan_Lahir = convert_and_validate_float(Berat_Badan_Lahir_input, 1.8, 4.0, "Berat Badan Lahir (kg)")
+        Tinggi_Badan_Lahir = convert_and_validate_float(Tinggi_Badan_Lahir_input, 42.0, 53.0, "Tinggi Badan Lahir (cm)")
+        Berat_Badan = convert_and_validate_float(Berat_Badan_input, 2.9, 24.5, "Berat Badan Saat Ini (kg)")
+        Tinggi_Badan = convert_and_validate_float(Tinggi_Badan_input, 49.0, 111.0, "Tinggi Badan Saat Ini (cm)")
 
-        hasil = model_prediksi.predict(input_data)
-        gizi_diagnosis = status_gizi_map[int(hasil[0])]
-        st.success(f"Hasil Prediksi Status Gizi Balita menggunakan **{algoritma}**: **{gizi_diagnosis}**")
+        # Jika semua validasi berhasil (tidak None)
+        if None not in (Usia, Berat_Badan_Lahir, Tinggi_Badan_Lahir, Berat_Badan, Tinggi_Badan):
+            model_prediksi = load_model(algoritma)
+            
+            input_data = [[
+                jenis_kelamin_map[Jenis_Kelamin],
+                Usia,
+                Berat_Badan_Lahir,
+                Tinggi_Badan_Lahir,
+                Berat_Badan,
+                Tinggi_Badan,
+                asi_map[Status_Pemberian_ASI],
+                tinggi_badan_map[Status_Tinggi_Badan],
+                berat_badan_map[Status_Berat_Badan]
+            ]]
+
+            hasil = model_prediksi.predict(input_data)
+            gizi_diagnosis = status_gizi_map[int(hasil[0])]
+            st.success(f"Hasil Prediksi Status Gizi Balita menggunakan **{algoritma}**: **{gizi_diagnosis}**")
