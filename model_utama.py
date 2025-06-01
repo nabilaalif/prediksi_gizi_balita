@@ -41,7 +41,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Judul
-st.title("Prediksi Status Gizi Balita Menggunakan Algoritma CatBoost dan KNN")
+st.header("Prediksi Status Gizi Balita Menggunakan Algoritma CatBoost dan KNN")
 st.markdown("Lakukan pengisian data berikut untuk mengetahui status gizi balita.")
 
 # Pilih algoritma dengan radio button
