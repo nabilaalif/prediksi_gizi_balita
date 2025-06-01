@@ -45,26 +45,50 @@ st.title("Prediksi Status Gizi Balita Menggunakan Algoritma CatBoost dan KNN")
 st.markdown("Lakukan pengisian data berikut untuk mengetahui prediksi status gizi balita.")
 
 # Pilih algoritma dengan radio button
-algoritma = st.radio("Pilih Algoritma yang akan digunakan:", ("CatBoost", "KNN"))
+algoritma = st.radio("Pilih Algoritma yang akan digunakan:", ("CatBoost", "KNN"), key="algoritma")
+
+# Inisialisasi session state default jika belum ada
+default_values = {
+    "Jenis_Kelamin": "",
+    "Usia_input": "",
+    "Berat_Badan_Lahir_input": "",
+    "Tinggi_Badan_Lahir_input": "",
+    "Berat_Badan_input": "",
+    "Tinggi_Badan_input": "",
+    "Status_Pemberian_ASI": "",
+    "Status_Tinggi_Badan": "",
+    "Status_Berat_Badan": ""
+}
+
+for key, val in default_values.items():
+    if key not in st.session_state:
+        st.session_state[key] = val
+
+# Tombol Clear untuk reset inputan
+def clear_inputs():
+    for key in default_values.keys():
+        st.session_state[key] = ""
+
+st.button("Clear", on_click=clear_inputs)
 
 # Kolom input (2 kolom)
 col1, col2 = st.columns(2)
 
 with col1:
-    Jenis_Kelamin = st.selectbox("Pilih Jenis Kelamin", ["", "Laki-laki", "Perempuan"])
+    Jenis_Kelamin = st.selectbox("Pilih Jenis Kelamin", ["", "Laki-laki", "Perempuan"], key="Jenis_Kelamin")
 
-    Usia_input = st.text_input("Masukkan Usia (bulan)", placeholder="Contoh: 24")
-    Berat_Badan_Lahir_input = st.text_input("Berat Badan Lahir (kg)", placeholder="Contoh: 3.2")
-    Tinggi_Badan_Lahir_input = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0")
-    Berat_Badan_input = st.text_input("Berat Badan Saat Ini (kg)", placeholder="Contoh: 12.5")
-    Tinggi_Badan_input = st.text_input("Tinggi Badan Saat Ini (cm)", placeholder="Contoh: 75.0")
+    Usia_input = st.text_input("Masukkan Usia (bulan)", placeholder="Contoh: 24", key="Usia_input")
+    Berat_Badan_Lahir_input = st.text_input("Berat Badan Lahir (kg)", placeholder="Contoh: 3.2", key="Berat_Badan_Lahir_input")
+    Tinggi_Badan_Lahir_input = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0", key="Tinggi_Badan_Lahir_input")
+    Berat_Badan_input = st.text_input("Berat Badan Saat Ini (kg)", placeholder="Contoh: 12.5", key="Berat_Badan_input")
+    Tinggi_Badan_input = st.text_input("Tinggi Badan Saat Ini (cm)", placeholder="Contoh: 75.0", key="Tinggi_Badan_input")
 
 with col2:
-    Status_Pemberian_ASI = st.selectbox("Status Pemberian ASI", ["", "Ya", "Tidak"])
-    Status_Tinggi_Badan = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["", "Sangat pendek", "Pendek", "Normal", "Tinggi"])
-    Status_Berat_Badan = st.selectbox("Kondisi Berat Badan Saat Ini", ["", "Berat badan sangat kurang", "Berat badan kurang", "Berat badan normal", "Risiko berat badan lebih"])
+    Status_Pemberian_ASI = st.selectbox("Status Pemberian ASI", ["", "Ya", "Tidak"], key="Status_Pemberian_ASI")
+    Status_Tinggi_Badan = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["", "Sangat pendek", "Pendek", "Normal", "Tinggi"], key="Status_Tinggi_Badan")
+    Status_Berat_Badan = st.selectbox("Kondisi Berat Badan Saat Ini", ["", "Berat badan sangat kurang", "Berat badan kurang", "Berat badan normal", "Risiko berat badan lebih"], key="Status_Berat_Badan")
 
-# Mapping
+# Mapping tetap sama
 jenis_kelamin_map = {'Laki-laki': 0, 'Perempuan': 1}
 asi_map = {'Tidak': 0, 'Ya': 1}
 berat_badan_map = {
