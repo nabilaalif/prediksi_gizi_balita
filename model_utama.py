@@ -22,7 +22,7 @@ st.markdown("""
         h1, h2, h3, h4, h5, h6 {
             color: #0d47a1;
         }
-        label, .css-1kyxreq, .css-1v0mbdj {  /* Tambahan selektor label agar konsisten di semua widget */
+        label, .css-1kyxreq, .css-1v0mbdj {
             font-weight: bold;
             color: #0d47a1;
         }
@@ -63,13 +63,6 @@ default_values = {
 for key in default_values:
     if key not in st.session_state:
         st.session_state[key] = default_values[key]
-
-# Tombol Clear untuk reset inputan
-def clear_inputs():
-    for key in default_values:
-        st.session_state[key] = default_values[key]
-
-st.button("Clear", on_click=clear_inputs)
 
 # Kolom input (2 kolom)
 col1, col2 = st.columns(2)
@@ -134,6 +127,7 @@ def convert_and_validate_int(value, min_val, max_val, field_name):
         return None
     return val
 
+# Tombol Tampilkan Hasil Prediksi di bawah form input
 if st.button("Tampilkan Hasil Prediksi"):
     # Cek dulu dropdown apakah ada yang belum dipilih
     if "" in (Jenis_Kelamin, Status_Pemberian_ASI, Status_Tinggi_Badan, Status_Berat_Badan):
@@ -165,3 +159,10 @@ if st.button("Tampilkan Hasil Prediksi"):
             hasil = model_prediksi.predict(input_data)
             gizi_diagnosis = status_gizi_map.get(int(hasil[0]), "Status gizi tidak diketahui")
             st.success(f"Hasil Prediksi Status Gizi Balita menggunakan **{algoritma}**: **{gizi_diagnosis}**")
+
+# Tombol Clear muncul **setelah** tombol prediksi
+def clear_inputs():
+    for key in default_values:
+        st.session_state[key] = default_values[key]
+
+st.button("Kosongkan Form", on_click=clear_inputs)
