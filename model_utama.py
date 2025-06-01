@@ -19,23 +19,23 @@ st.markdown("""
         .stApp {
             background: linear-gradient(to right, #e0f7fa, #ffffff);
         }
-        h1 {
+        h1, h2, h3, h4, h5, h6 {
             color: #0d47a1;
         }
-        .stSelectbox label, .stTextInput label {
+        label, .css-1kyxreq, .css-1v0mbdj {  /* Tambahan selektor label agar konsisten di semua widget */
             font-weight: bold;
             color: #0d47a1;
         }
-        .stButton button {
+        button, .stButton > button {
             background-color: #0d47a1;
             color: white;
+            border: none;
+            padding: 0.4em 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
         }
-        .stButton button:hover {
+        button:hover, .stButton > button:hover {
             background-color: #1565c0;
-        }
-        .stRadio label {
-            font-weight: bold;
-            color: #0d47a1;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -60,14 +60,14 @@ default_values = {
     "Status_Berat_Badan": ""
 }
 
-for key, val in default_values.items():
+for key in default_values:
     if key not in st.session_state:
-        st.session_state[key] = val
+        st.session_state[key] = default_values[key]
 
 # Tombol Clear untuk reset inputan
 def clear_inputs():
-    for key in default_values.keys():
-        st.session_state[key] = ""
+    for key in default_values:
+        st.session_state[key] = default_values[key]
 
 st.button("Clear", on_click=clear_inputs)
 
@@ -92,9 +92,9 @@ with col2:
 jenis_kelamin_map = {'Laki-laki': 0, 'Perempuan': 1}
 asi_map = {'Tidak': 0, 'Ya': 1}
 berat_badan_map = {
+    'Berat badan sangat kurang': 2,
     'Berat badan kurang': 0,
     'Berat badan normal': 1,
-    'Berat badan sangat kurang': 2,
     'Risiko berat badan lebih': 3
 }
 tinggi_badan_map = {
@@ -115,7 +115,7 @@ status_gizi_map = {
 def convert_and_validate_float(value, min_val, max_val, field_name):
     try:
         val = float(value.replace(',', '.'))  # Mengatasi input desimal dengan koma
-    except:
+    except ValueError:
         st.warning(f"Input untuk {field_name} harus berupa angka yang valid.")
         return None
     if not (min_val <= val <= max_val):
@@ -126,7 +126,7 @@ def convert_and_validate_float(value, min_val, max_val, field_name):
 def convert_and_validate_int(value, min_val, max_val, field_name):
     try:
         val = int(value)
-    except:
+    except ValueError:
         st.warning(f"Input untuk {field_name} harus berupa angka bulat yang valid.")
         return None
     if not (min_val <= val <= max_val):
@@ -149,7 +149,7 @@ if st.button("Tampilkan Hasil Prediksi"):
         # Jika semua validasi berhasil (tidak None)
         if None not in (Usia, Berat_Badan_Lahir, Tinggi_Badan_Lahir, Berat_Badan, Tinggi_Badan):
             model_prediksi = load_model(algoritma)
-            
+
             input_data = [[
                 jenis_kelamin_map[Jenis_Kelamin],
                 Usia,
@@ -163,5 +163,5 @@ if st.button("Tampilkan Hasil Prediksi"):
             ]]
 
             hasil = model_prediksi.predict(input_data)
-            gizi_diagnosis = status_gizi_map[int(hasil[0])]
+            gizi_diagnosis = status_gizi_map.get(int(hasil[0]), "Status gizi tidak diketahui")
             st.success(f"Hasil Prediksi Status Gizi Balita menggunakan **{algoritma}**: **{gizi_diagnosis}**")
