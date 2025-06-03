@@ -41,7 +41,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Judul
-st.markdown("<p style='font-size:20px; font-weight:bold; color:#0d47a1;'>Prediksi Status Gizi Balita Menggunakan Algoritma CatBoost dan KNN</p>", unsafe_allow_html=True)
+st.markdown("<p style='font-size:22px; font-weight:bold; color:black;'>Prediksi Status Gizi Balita Menggunakan Algoritma CatBoost dan KNN</p>", unsafe_allow_html=True)
 
 # Pilih algoritma dengan radio button
 algoritma = st.radio("Pilih Algoritma yang akan digunakan:", ("CatBoost", "KNN"), key="algoritma")
