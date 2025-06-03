@@ -66,33 +66,34 @@ for key in default_values:
         st.session_state[key] = default_values[key]
 
 # Input kolom
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     jenis_kelamin = st.selectbox("Pilih Jenis Kelamin", ["Laki-laki", "Perempuan"])
     
-    usia = st.text_input("Masukkan Usia (bulan)", placeholder="Contoh: 24")
-    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Masukkan nilai antara 1 hingga 59 bulan</div>", unsafe_allow_html=True)
+    usia = st.text_input("Usia (bulan)", placeholder="Contoh: 24")
+    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Input nilai antara 1 hingga 59</div>", unsafe_allow_html=True)
 
     berat_lahir = st.text_input("Berat Badan Lahir (kg)", placeholder="Contoh: 3.2")
-    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Masukkan nilai antara 1.8 hingga 4.0 kg</div>", unsafe_allow_html=True)
-
-    tinggi_lahir = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0")
-    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Masukkan nilai antara 42.0 hingga 53.0 cm</div>", unsafe_allow_html=True)
-
-    status_asi = st.selectbox("Status Pemberian ASI", ["Eksklusif", "Tidak Eksklusif"])
+    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Input nilai antara 1.8 hingga 4.0</div>", unsafe_allow_html=True)
 
 with col2:
+    tinggi_lahir = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0")
+    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Input nilai antara 42.0 hingga 53.0</div>", unsafe_allow_html=True)
+    
     berat_saat_ini = st.text_input("Berat Badan Saat Ini (kg)", placeholder="Contoh: 12.5")
-    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Masukkan nilai antara 2.9 hingga 24.5 kg</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Input nilai antara 2.9 hingga 24.5</div>", unsafe_allow_html=True)
 
     tinggi_saat_ini = st.text_input("Tinggi Badan Saat Ini (cm)", placeholder="Contoh: 75.0")
-    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Masukkan nilai antara 49.0 hingga 111.0 cm</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Input nilai antara 49.0 hingga 111.0</div>", unsafe_allow_html=True)
 
+with col3:
+    status_asi = st.selectbox("Status Pemberian ASI", ["Ya", "Tidak"])
+    
     kondisi_tinggi = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["Normal", "Pendek", "Sangat Pendek", "Tinggi"])
 
     kondisi_berat = st.selectbox("Kondisi Berat Badan Saat Ini", ["Berat badan normal", "Berat badan sangat kurang", "Berat badan kurang", "Risiko berat badan lebih"])
-
+    
 # Mapping data
 jenis_kelamin_map = {'Laki-laki': 0, 'Perempuan': 1}
 asi_map = {'Tidak': 0, 'Ya': 1}
