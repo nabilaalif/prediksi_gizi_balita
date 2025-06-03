@@ -10,21 +10,7 @@ def load_model(algoritma):
     elif algoritma == "KNN":
         return pickle.load(open("modelKNN_terbaik.sav", "rb"))
 
-st.markdown("""
-    <style>
-        /* Ganti warna teks dan background warning */
-        .stAlert[data-baseweb="alert"] {
-            background-color: #f5f5f5; /* warna abu muda */
-            border-left: 5px solid #0d47a1; /* garis tepi biru gelap */
-        }
-        .stAlert[data-baseweb="alert"] p {
-            color: black !important; /* warna teks */
-            font-weight: bold;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-# Custom CSS untuk latar belakang dan elemen UI
+# Custom CSS
 st.markdown("""
     <style>
         body {
@@ -57,12 +43,12 @@ st.markdown("""
 # Judul
 st.markdown("<p style='font-size:22px; font-weight:bold; color:black;'>Prediksi Status Gizi Balita Menggunakan Algoritma CatBoost dan KNN</p>", unsafe_allow_html=True)
 
-# Pilih algoritma dengan radio button
+# Pilih algoritma
 algoritma = st.radio("Pilih Algoritma yang akan digunakan:", ("CatBoost", "KNN"), key="algoritma")
 
 st.markdown("Lakukan pengisian data berikut untuk mengetahui status gizi balita.")
 
-# Inisialisasi session state default jika belum ada
+# Inisialisasi session state
 default_values = {
     "Jenis_Kelamin": "",
     "Usia_input": "",
@@ -79,7 +65,7 @@ for key in default_values:
     if key not in st.session_state:
         st.session_state[key] = default_values[key]
 
-# Kolom input (3 kolom)
+# Input kolom
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -97,7 +83,7 @@ with col3:
     Status_Tinggi_Badan = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["", "Sangat pendek", "Pendek", "Normal", "Tinggi"], key="Status_Tinggi_Badan")
     Status_Berat_Badan = st.selectbox("Kondisi Berat Badan Saat Ini", ["", "Berat badan sangat kurang", "Berat badan kurang", "Berat badan normal", "Risiko berat badan lebih"], key="Status_Berat_Badan")
 
-# Mapping tetap sama
+# Mapping data
 jenis_kelamin_map = {'Laki-laki': 0, 'Perempuan': 1}
 asi_map = {'Tidak': 0, 'Ya': 1}
 berat_badan_map = {
@@ -121,14 +107,21 @@ status_gizi_map = {
     5: 'Obesitas'
 }
 
+# Fungsi validasi
 def convert_and_validate_float(value, min_val, max_val, field_name):
     try:
-        val = float(value.replace(',', '.'))  # Mengatasi input desimal dengan koma
+        val = float(value.replace(',', '.'))
     except ValueError:
-        st.warning(f"Input untuk {field_name} harus berupa angka yang valid.")
+        st.markdown(
+            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus berupa angka yang valid.</div>",
+            unsafe_allow_html=True
+        )
         return None
     if not (min_val <= val <= max_val):
-        st.warning(f"Input untuk {field_name} harus antara {min_val} sampai {max_val}.")
+        st.markdown(
+            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus antara {min_val} sampai {max_val}.</div>",
+            unsafe_allow_html=True
+        )
         return None
     return val
 
@@ -136,27 +129,30 @@ def convert_and_validate_int(value, min_val, max_val, field_name):
     try:
         val = int(value)
     except ValueError:
-        st.warning(f"Input untuk {field_name} harus berupa angka bulat yang valid.")
+        st.markdown(
+            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus berupa bilangan bulat.</div>",
+            unsafe_allow_html=True
+        )
         return None
     if not (min_val <= val <= max_val):
-        st.warning(f"Input untuk {field_name} harus antara {min_val} sampai {max_val}.")
+        st.markdown(
+            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus antara {min_val} sampai {max_val}.</div>",
+            unsafe_allow_html=True
+        )
         return None
     return val
 
-# Tombol Tampilkan Hasil Prediksi di bawah form input
+# Tombol Prediksi
 if st.button("Hasil Prediksi"):
-    # Cek dulu dropdown apakah ada yang belum dipilih
     if "" in (Jenis_Kelamin, Status_Pemberian_ASI, Status_Tinggi_Badan, Status_Berat_Badan):
         st.warning("Mohon lengkapi semua pilihan terlebih dahulu.")
     else:
-        # Validasi input numerik
         Usia = convert_and_validate_int(Usia_input, 1, 59, "Usia (bulan)")
         Berat_Badan_Lahir = convert_and_validate_float(Berat_Badan_Lahir_input, 1.8, 4.0, "Berat Badan Lahir (kg)")
         Tinggi_Badan_Lahir = convert_and_validate_float(Tinggi_Badan_Lahir_input, 42.0, 53.0, "Tinggi Badan Lahir (cm)")
         Berat_Badan = convert_and_validate_float(Berat_Badan_input, 2.9, 24.5, "Berat Badan Saat Ini (kg)")
         Tinggi_Badan = convert_and_validate_float(Tinggi_Badan_input, 49.0, 111.0, "Tinggi Badan Saat Ini (cm)")
 
-        # Jika semua validasi berhasil (tidak None)
         if None not in (Usia, Berat_Badan_Lahir, Tinggi_Badan_Lahir, Berat_Badan, Tinggi_Badan):
             model_prediksi = load_model(algoritma)
 
@@ -174,11 +170,12 @@ if st.button("Hasil Prediksi"):
 
             hasil = model_prediksi.predict(input_data)
             gizi_diagnosis = status_gizi_map.get(int(hasil[0]), "Status gizi tidak diketahui")
-            st.markdown(f"<p style='font-size:18px; font-weight:bold; color:black;'>Hasil Prediksi Status Gizi Balita menggunakan {algoritma}: <span style='color:#0d47a1;'>{gizi_diagnosis}</span></p>", unsafe_allow_html=True)
 
-# Tombol Clear muncul **setelah** tombol prediksi
+            st.markdown(f"<p style='font-size:18px; font-weight:bold; color:black;'>Hasil Prediksi Status Gizi Balita menggunakan <u>{algoritma}</u>: <span style='color:#0d47a1;'>{gizi_diagnosis}</span></p>", unsafe_allow_html=True)
+
+# Tombol Clear
 def clear_inputs():
     for key in default_values:
         st.session_state[key] = default_values[key]
 
-st.button("Kosongkan Form untuk Mengisi Kembali", on_click=clear_inputs) 
+st.button("Kosongkan Form untuk Mengisi Kembali", on_click=clear_inputs)
