@@ -54,17 +54,20 @@ col1, col2, col3 = st.columns(3)
 with col1:
     jenis_kelamin = st.selectbox("Pilih Jenis Kelamin", ["Laki-laki", "Perempuan"])
     usia = st.text_input("Usia (bulan)", placeholder="Contoh: 24")
-    st.markdown("<div style='font-size:12px; color:gray;'>Input nilai antara 1 hingga 59 </div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 1 hingga 59</div>", unsafe_allow_html=True)
+
     berat_lahir = st.text_input("Berat Badan Lahir (kg)", placeholder="Contoh: 3.2")
-    st.markdown("<div style='font-size:12px; color:gray;'>Input nilai antara 1.8 hingga 4.0 </div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 1.8 hingga 4.0</div>", unsafe_allow_html=True)
 
 with col2:
     tinggi_lahir = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0")
-    st.markdown("<div style='font-size:12px; color:gray;'>Input nilai antara 42.0 hingga 53.0 </div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 42.0 hingga 53.0</div>", unsafe_allow_html=True)
+
     berat_saat_ini = st.text_input("Berat Badan Saat Ini (kg)", placeholder="Contoh: 12.5")
-    st.markdown("<div style='font-size:12px; color:gray;'>Input nilai antara 2.9 hingga 24.5 </div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 2.9 hingga 24.5</div>", unsafe_allow_html=True)
+
     tinggi_saat_ini = st.text_input("Tinggi Badan Saat Ini (cm)", placeholder="Contoh: 75.0")
-    st.markdown("<div style='font-size:12px; color:gray;'>Input nilai antara 49.0 hingga 111.0 </div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 49.0 hingga 111.0</div>", unsafe_allow_html=True)
 
 with col3:
     status_asi = st.selectbox("Status Pemberian ASI", ["Ya", "Tidak"])
