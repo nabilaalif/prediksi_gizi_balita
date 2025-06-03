@@ -160,7 +160,7 @@ if st.button("Hasil Prediksi"):
 
             hasil = model_prediksi.predict(input_data)
             gizi_diagnosis = status_gizi_map.get(int(hasil[0]), "Status gizi tidak diketahui")
-            st.success(f"Hasil Prediksi Status Gizi Balita menggunakan **{algoritma}**: **{gizi_diagnosis}**")
+            st.markdown(f"<p style='font-size:18px; font-weight:bold; color:black;'>Hasil Prediksi Status Gizi Balita menggunakan {algoritma}: <span style='color:#0d47a1;'>{gizi_diagnosis}</span></p>", unsafe_allow_html=True)
 
 # Tombol Clear muncul **setelah** tombol prediksi
 def clear_inputs():
