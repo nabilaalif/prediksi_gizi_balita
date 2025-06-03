@@ -46,7 +46,24 @@ st.markdown("<p style='font-size:22px; font-weight:bold; color:black;'>Prediksi 
 # Pilih algoritma
 algoritma = st.radio("Pilih Algoritma yang akan digunakan:", ("CatBoost", "KNN"), key="algoritma")
 
-st.markdown("Lakukan pengisian data berikut untuk mengetahui status gizi balita.")
+st.markdown("Lakukan pengisian data berikut:")
+
+# Inisialisasi session state
+default_values = {
+    "Jenis_Kelamin": "",
+    "Usia_input": "",
+    "Berat_Badan_Lahir_input": "",
+    "Tinggi_Badan_Lahir_input": "",
+    "Berat_Badan_input": "",
+    "Tinggi_Badan_input": "",
+    "Status_Pemberian_ASI": "",
+    "Status_Tinggi_Badan": "",
+    "Status_Berat_Badan": ""
+}
+
+for key in default_values:
+    if key not in st.session_state:
+        st.session_state[key] = default_values[key]
 
 # Input kolom
 col1, col2, col3 = st.columns(3)
@@ -123,32 +140,38 @@ def convert_and_validate_int(value, min_val, max_val, field_name):
 
 # Tombol Prediksi
 if st.button("Hasil Prediksi"):
-    usia_val = convert_and_validate_int(usia, 1, 59, "Usia (bulan)")
-    bb_lahir_val = convert_and_validate_float(berat_lahir, 1.8, 4.0, "Berat Badan Lahir (kg)")
-    tb_lahir_val = convert_and_validate_float(tinggi_lahir, 42.0, 53.0, "Tinggi Badan Lahir (cm)")
-    bb_now_val = convert_and_validate_float(berat_saat_ini, 2.9, 24.5, "Berat Badan Saat Ini (kg)")
-    tb_now_val = convert_and_validate_float(tinggi_saat_ini, 49.0, 111.0, "Tinggi Badan Saat Ini (cm)")
+    if "" in (Jenis_Kelamin, Status_Pemberian_ASI, Status_Tinggi_Badan, Status_Berat_Badan):
+        st.warning("Mohon lengkapi semua pilihan terlebih dahulu.")
+    else:
+        Usia = convert_and_validate_int(Usia_input, 1, 59, "Usia (bulan)")
+        Berat_Badan_Lahir = convert_and_validate_float(Berat_Badan_Lahir_input, 1.8, 4.0, "Berat Badan Lahir (kg)")
+        Tinggi_Badan_Lahir = convert_and_validate_float(Tinggi_Badan_Lahir_input, 42.0, 53.0, "Tinggi Badan Lahir (cm)")
+        Berat_Badan = convert_and_validate_float(Berat_Badan_input, 2.9, 24.5, "Berat Badan Saat Ini (kg)")
+        Tinggi_Badan = convert_and_validate_float(Tinggi_Badan_input, 49.0, 111.0, "Tinggi Badan Saat Ini (cm)")
 
-    if None not in (usia_val, bb_lahir_val, tb_lahir_val, bb_now_val, tb_now_val):
-        model_prediksi = load_model(algoritma)
-        input_data = [[
-            jenis_kelamin_map[jenis_kelamin],
-            usia_val,
-            bb_lahir_val,
-            tb_lahir_val,
-            bb_now_val,
-            tb_now_val,
-            asi_map[status_asi],
-            tinggi_badan_map[kondisi_tinggi],
-            berat_badan_map[kondisi_berat]
-        ]]
-        hasil = model_prediksi.predict(input_data)
-        gizi_diagnosis = status_gizi_map.get(int(hasil[0]), "Status gizi tidak diketahui")
+        if None not in (Usia, Berat_Badan_Lahir, Tinggi_Badan_Lahir, Berat_Badan, Tinggi_Badan):
+            model_prediksi = load_model(algoritma)
 
-        st.markdown(f"<p style='font-size:18px; font-weight:bold;'>Hasil Prediksi Status Gizi menggunakan <u>{algoritma}</u>: <span style='color:#0d47a1;'>{gizi_diagnosis}</span></p>", unsafe_allow_html=True)
+            input_data = [[
+                jenis_kelamin_map[Jenis_Kelamin],
+                Usia,
+                Berat_Badan_Lahir,
+                Tinggi_Badan_Lahir,
+                Berat_Badan,
+                Tinggi_Badan,
+                asi_map[Status_Pemberian_ASI],
+                tinggi_badan_map[Status_Tinggi_Badan],
+                berat_badan_map[Status_Berat_Badan]
+            ]]
 
-# Tombol Clear Form
+            hasil = model_prediksi.predict(input_data)
+            gizi_diagnosis = status_gizi_map.get(int(hasil[0]), "Status gizi tidak diketahui")
+
+            st.markdown(f"<p style='font-size:18px; font-weight:bold; color:black;'>Hasil Prediksi Status Gizi Balita menggunakan <u>{algoritma}</u>: <span style='color:#0d47a1;'>{gizi_diagnosis}</span></p>", unsafe_allow_html=True)
+
+# Tombol Clear
 def clear_inputs():
-    st.experimental_rerun()
+    for key in default_values:
+        st.session_state[key] = default_values[key]
 
 st.button("Kosongkan Form untuk Mengisi Kembali", on_click=clear_inputs)
