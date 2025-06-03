@@ -42,10 +42,11 @@ st.markdown("""
 
 # Judul
 st.header("Prediksi Status Gizi Balita Menggunakan Algoritma CatBoost dan KNN")
-st.markdown("Lakukan pengisian data berikut untuk mengetahui status gizi balita.")
 
 # Pilih algoritma dengan radio button
 algoritma = st.radio("Pilih Algoritma yang akan digunakan:", ("CatBoost", "KNN"), key="algoritma")
+
+st.markdown("Lakukan pengisian data berikut untuk mengetahui status gizi balita.")
 
 # Inisialisasi session state default jika belum ada
 default_values = {
