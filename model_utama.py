@@ -69,7 +69,7 @@ for key in default_values:
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    Jenis_Kelamin = st.selectbox("Pilih Jenis Kelamin", ["", "Laki-laki", "Perempuan"], key="Jenis_Kelamin")
+    Jenis_Kelamin = st.selectbox("Pilih Jenis Kelamin", ["Laki-laki", "Perempuan"], key="Jenis_Kelamin")
     
     Usia_input = st.text_input("Usia (bulan)", placeholder="Contoh: 24")
     st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 1 hingga 59</div>", unsafe_allow_html=True)
@@ -88,9 +88,9 @@ with col2:
     st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 49.0 hingga 111.0</div>", unsafe_allow_html=True)
 
 with col3:
-    Status_Pemberian_ASI = st.selectbox("Status Pemberian ASI", ["", "Ya", "Tidak"], key="Status_Pemberian_ASI")
-    Status_Tinggi_Badan = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["", "Sangat pendek", "Pendek", "Normal", "Tinggi"], key="Status_Tinggi_Badan")
-    Status_Berat_Badan = st.selectbox("Kondisi Berat Badan Saat Ini", ["", "Berat badan sangat kurang", "Berat badan kurang", "Berat badan normal", "Risiko berat badan lebih"], key="Status_Berat_Badan")
+    Status_Pemberian_ASI = st.selectbox("Status Pemberian ASI", ["Ya", "Tidak"], key="Status_Pemberian_ASI")
+    Status_Tinggi_Badan = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["Sangat pendek", "Pendek", "Normal", "Tinggi"], key="Status_Tinggi_Badan")
+    Status_Berat_Badan = st.selectbox("Kondisi Berat Badan Saat Ini", ["Berat badan sangat kurang", "Berat badan kurang", "Berat badan normal", "Risiko berat badan lebih"], key="Status_Berat_Badan")
 
 # Mapping data
 jenis_kelamin_map = {'Laki-laki': 0, 'Perempuan': 1}
