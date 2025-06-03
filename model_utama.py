@@ -66,7 +66,7 @@ for key in default_values:
         st.session_state[key] = default_values[key]
 
 # Input kolom
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
 with col1:
     Jenis_Kelamin = st.selectbox("Pilih Jenis Kelamin", ["", "Laki-laki", "Perempuan"], key="Jenis_Kelamin")
