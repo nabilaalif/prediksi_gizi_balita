@@ -46,7 +46,7 @@ st.markdown("<p style='font-size:22px; font-weight:bold; color:black;'>Prediksi 
 # Pilih algoritma
 algoritma = st.radio("Pilih Algoritma yang akan digunakan:", ("CatBoost", "KNN"), key="algoritma")
 
-st.markdown("Lakukan pengisian data berikut:")
+st.markdown("Lakukan pengisian data berikut untuk mengetahui status gizi balita.")
 
 # Inisialisasi session state
 default_values = {
@@ -69,27 +69,28 @@ for key in default_values:
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    jenis_kelamin = st.selectbox("Pilih Jenis Kelamin", ["Laki-laki", "Perempuan"])
-    usia = st.text_input("Usia (bulan)", placeholder="Contoh: 24")
-    st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 1 hingga 59</div>", unsafe_allow_html=True)
-
-    berat_lahir = st.text_input("Berat Badan Lahir (kg)", placeholder="Contoh: 3.2")
-    st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 1.8 hingga 4.0</div>", unsafe_allow_html=True)
+    Jenis_Kelamin = st.selectbox("Pilih Jenis Kelamin", ["", "Laki-laki", "Perempuan"], key="Jenis_Kelamin")
+    
+    Usia_input = st.text_input("Masukkan Usia (bulan)", placeholder="Contoh: 24", key="Usia_input")
+    st.caption("Masukkan nilai antara 1 hingga 59 bulan")
+    
+    Berat_Badan_Lahir_input = st.text_input("Berat Badan Lahir (kg)", placeholder="Contoh: 3.2", key="Berat_Badan_Lahir_input")
+    st.caption("Masukkan nilai antara 1.8 hingga 4.0 kg")
 
 with col2:
-    tinggi_lahir = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0")
-    st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 42.0 hingga 53.0</div>", unsafe_allow_html=True)
+    Tinggi_Badan_Lahir_input = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0", key="Tinggi_Badan_Lahir_input")
+    st.caption("Masukkan nilai antara 42.0 hingga 53.0 cm")
 
-    berat_saat_ini = st.text_input("Berat Badan Saat Ini (kg)", placeholder="Contoh: 12.5")
-    st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 2.9 hingga 24.5</div>", unsafe_allow_html=True)
+    Berat_Badan_input = st.text_input("Berat Badan Saat Ini (kg)", placeholder="Contoh: 12.5", key="Berat_Badan_input")
+    st.caption("Masukkan nilai antara 2.9 hingga 24.5 kg")
 
-    tinggi_saat_ini = st.text_input("Tinggi Badan Saat Ini (cm)", placeholder="Contoh: 75.0")
-    st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 49.0 hingga 111.0</div>", unsafe_allow_html=True)
+    Tinggi_Badan_input = st.text_input("Tinggi Badan Saat Ini (cm)", placeholder="Contoh: 75.0", key="Tinggi_Badan_input")
+    st.caption("Masukkan nilai antara 49.0 hingga 111.0 cm")
 
 with col3:
-    status_asi = st.selectbox("Status Pemberian ASI", ["Ya", "Tidak"])
-    kondisi_tinggi = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["Normal", "Pendek", "Sangat Pendek", "Tinggi"])
-    kondisi_berat = st.selectbox("Kondisi Berat Badan Saat Ini", ["Berat badan normal", "Berat badan sangat kurang", "Berat badan kurang", "Risiko berat badan lebih"])
+    Status_Pemberian_ASI = st.selectbox("Status Pemberian ASI", ["", "Ya", "Tidak"], key="Status_Pemberian_ASI")
+    Status_Tinggi_Badan = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["", "Sangat pendek", "Pendek", "Normal", "Tinggi"], key="Status_Tinggi_Badan")
+    Status_Berat_Badan = st.selectbox("Kondisi Berat Badan Saat Ini", ["", "Berat badan sangat kurang", "Berat badan kurang", "Berat badan normal", "Risiko berat badan lebih"], key="Status_Berat_Badan")
 
 # Mapping data
 jenis_kelamin_map = {'Laki-laki': 0, 'Perempuan': 1}
@@ -103,7 +104,7 @@ berat_badan_map = {
 tinggi_badan_map = {
     'Normal': 0,
     'Pendek': 1,
-    'Sangat Pendek': 2,
+    'Sangat pendek': 2,
     'Tinggi': 3
 }
 status_gizi_map = {
@@ -120,10 +121,16 @@ def convert_and_validate_float(value, min_val, max_val, field_name):
     try:
         val = float(value.replace(',', '.'))
     except ValueError:
-        st.markdown(f"<div style='padding: 0.5em; background-color: #f0f0f0;'>⚠️ Input untuk {field_name} harus berupa angka.</div>", unsafe_allow_html=True)
+        st.markdown(
+            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus berupa angka yang valid.</div>",
+            unsafe_allow_html=True
+        )
         return None
     if not (min_val <= val <= max_val):
-        st.markdown(f"<div style='padding: 0.5em; background-color: #f0f0f0;'>⚠️ Input untuk {field_name} harus antara {min_val} sampai {max_val}.</div>", unsafe_allow_html=True)
+        st.markdown(
+            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus antara {min_val} sampai {max_val}.</div>",
+            unsafe_allow_html=True
+        )
         return None
     return val
 
@@ -131,10 +138,16 @@ def convert_and_validate_int(value, min_val, max_val, field_name):
     try:
         val = int(value)
     except ValueError:
-        st.markdown(f"<div style='padding: 0.5em; background-color: #f0f0f0;'>⚠️ Input untuk {field_name} harus bilangan bulat.</div>", unsafe_allow_html=True)
+        st.markdown(
+            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus berupa bilangan bulat.</div>",
+            unsafe_allow_html=True
+        )
         return None
     if not (min_val <= val <= max_val):
-        st.markdown(f"<div style='padding: 0.5em; background-color: #f0f0f0;'>⚠️ Input untuk {field_name} harus antara {min_val} sampai {max_val}.</div>", unsafe_allow_html=True)
+        st.markdown(
+            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus antara {min_val} sampai {max_val}.</div>",
+            unsafe_allow_html=True
+        )
         return None
     return val
 
