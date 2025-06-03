@@ -48,54 +48,35 @@ algoritma = st.radio("Pilih Algoritma yang akan digunakan:", ("CatBoost", "KNN")
 
 st.markdown("Lakukan pengisian data berikut untuk mengetahui status gizi balita.")
 
-# Inisialisasi session state
-default_values = {
-    "Jenis_Kelamin": "",
-    "Usia_input": "",
-    "Berat_Badan_Lahir_input": "",
-    "Tinggi_Badan_Lahir_input": "",
-    "Berat_Badan_input": "",
-    "Tinggi_Badan_input": "",
-    "Status_Pemberian_ASI": "",
-    "Status_Tinggi_Badan": "",
-    "Status_Berat_Badan": ""
-}
-
-for key in default_values:
-    if key not in st.session_state:
-        st.session_state[key] = default_values[key]
-
 # Input kolom
 col1, col2 = st.columns(2)
 
 with col1:
     jenis_kelamin = st.selectbox("Pilih Jenis Kelamin", ["Laki-laki", "Perempuan"])
-    
-    usia = st.text_input("Masukkan Usia (bulan)", placeholder="Contoh: 24")
-    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Masukkan nilai antara 1 hingga 59 bulan</div>", unsafe_allow_html=True)
+    usia_input = st.text_input("Masukkan Usia (bulan)", placeholder="Contoh: 24")
+    st.markdown("<div style='font-size:12px; color:gray;'>Masukkan nilai antara 1 hingga 59 bulan</div>", unsafe_allow_html=True)
 
-    berat_lahir = st.text_input("Berat Badan Lahir (kg)", placeholder="Contoh: 3.2")
-    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Masukkan nilai antara 1.8 hingga 4.0 kg</div>", unsafe_allow_html=True)
+    berat_lahir_input = st.text_input("Berat Badan Lahir (kg)", placeholder="Contoh: 3.2")
+    st.markdown("<div style='font-size:12px; color:gray;'>Masukkan nilai antara 1.8 hingga 4.0 kg</div>", unsafe_allow_html=True)
 
-    tinggi_lahir = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0")
-    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Masukkan nilai antara 42.0 hingga 53.0 cm</div>", unsafe_allow_html=True)
+    tinggi_lahir_input = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0")
+    st.markdown("<div style='font-size:12px; color:gray;'>Masukkan nilai antara 42.0 hingga 53.0 cm</div>", unsafe_allow_html=True)
 
     status_asi = st.selectbox("Status Pemberian ASI", ["Eksklusif", "Tidak Eksklusif"])
 
 with col2:
-    berat_saat_ini = st.text_input("Berat Badan Saat Ini (kg)", placeholder="Contoh: 12.5")
-    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Masukkan nilai antara 2.9 hingga 24.5 kg</div>", unsafe_allow_html=True)
+    berat_input = st.text_input("Berat Badan Saat Ini (kg)", placeholder="Contoh: 12.5")
+    st.markdown("<div style='font-size:12px; color:gray;'>Masukkan nilai antara 2.9 hingga 24.5 kg</div>", unsafe_allow_html=True)
 
-    tinggi_saat_ini = st.text_input("Tinggi Badan Saat Ini (cm)", placeholder="Contoh: 75.0")
-    st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Masukkan nilai antara 49.0 hingga 111.0 cm</div>", unsafe_allow_html=True)
+    tinggi_input = st.text_input("Tinggi Badan Saat Ini (cm)", placeholder="Contoh: 75.0")
+    st.markdown("<div style='font-size:12px; color:gray;'>Masukkan nilai antara 49.0 hingga 111.0 cm</div>", unsafe_allow_html=True)
 
     kondisi_tinggi = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["Normal", "Pendek", "Sangat Pendek", "Tinggi"])
-
     kondisi_berat = st.selectbox("Kondisi Berat Badan Saat Ini", ["Berat badan normal", "Berat badan sangat kurang", "Berat badan kurang", "Risiko berat badan lebih"])
 
-# Mapping data
+# Mapping
 jenis_kelamin_map = {'Laki-laki': 0, 'Perempuan': 1}
-asi_map = {'Tidak': 0, 'Ya': 1}
+asi_map = {'Tidak Eksklusif': 0, 'Eksklusif': 1}
 berat_badan_map = {
     'Berat badan sangat kurang': 2,
     'Berat badan kurang': 0,
@@ -105,7 +86,7 @@ berat_badan_map = {
 tinggi_badan_map = {
     'Normal': 0,
     'Pendek': 1,
-    'Sangat pendek': 2,
+    'Sangat Pendek': 2,
     'Tinggi': 3
 }
 status_gizi_map = {
@@ -117,75 +98,53 @@ status_gizi_map = {
     5: 'Obesitas'
 }
 
-# Fungsi validasi
+# Validasi
 def convert_and_validate_float(value, min_val, max_val, field_name):
     try:
         val = float(value.replace(',', '.'))
-    except ValueError:
-        st.markdown(
-            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus berupa angka yang valid.</div>",
-            unsafe_allow_html=True
-        )
+    except:
+        st.error(f"Input {field_name} harus berupa angka.")
         return None
-    if not (min_val <= val <= max_val):
-        st.markdown(
-            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus antara {min_val} sampai {max_val}.</div>",
-            unsafe_allow_html=True
-        )
+    if not min_val <= val <= max_val:
+        st.warning(f"{field_name} harus dalam rentang {min_val} sampai {max_val}")
         return None
     return val
 
 def convert_and_validate_int(value, min_val, max_val, field_name):
     try:
         val = int(value)
-    except ValueError:
-        st.markdown(
-            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus berupa bilangan bulat.</div>",
-            unsafe_allow_html=True
-        )
+    except:
+        st.error(f"{field_name} harus berupa bilangan bulat.")
         return None
-    if not (min_val <= val <= max_val):
-        st.markdown(
-            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus antara {min_val} sampai {max_val}.</div>",
-            unsafe_allow_html=True
-        )
+    if not min_val <= val <= max_val:
+        st.warning(f"{field_name} harus antara {min_val} sampai {max_val}")
         return None
     return val
 
 # Tombol Prediksi
 if st.button("Hasil Prediksi"):
-    if "" in (Jenis_Kelamin, Status_Pemberian_ASI, Status_Tinggi_Badan, Status_Berat_Badan):
-        st.warning("Mohon lengkapi semua pilihan terlebih dahulu.")
-    else:
-        Usia = convert_and_validate_int(Usia_input, 1, 59, "Usia (bulan)")
-        Berat_Badan_Lahir = convert_and_validate_float(Berat_Badan_Lahir_input, 1.8, 4.0, "Berat Badan Lahir (kg)")
-        Tinggi_Badan_Lahir = convert_and_validate_float(Tinggi_Badan_Lahir_input, 42.0, 53.0, "Tinggi Badan Lahir (cm)")
-        Berat_Badan = convert_and_validate_float(Berat_Badan_input, 2.9, 24.5, "Berat Badan Saat Ini (kg)")
-        Tinggi_Badan = convert_and_validate_float(Tinggi_Badan_input, 49.0, 111.0, "Tinggi Badan Saat Ini (cm)")
+    usia = convert_and_validate_int(usia_input, 1, 59, "Usia (bulan)")
+    berat_lahir = convert_and_validate_float(berat_lahir_input, 1.8, 4.0, "Berat Badan Lahir (kg)")
+    tinggi_lahir = convert_and_validate_float(tinggi_lahir_input, 42.0, 53.0, "Tinggi Badan Lahir (cm)")
+    berat = convert_and_validate_float(berat_input, 2.9, 24.5, "Berat Badan Saat Ini (kg)")
+    tinggi = convert_and_validate_float(tinggi_input, 49.0, 111.0, "Tinggi Badan Saat Ini (cm)")
 
-        if None not in (Usia, Berat_Badan_Lahir, Tinggi_Badan_Lahir, Berat_Badan, Tinggi_Badan):
-            model_prediksi = load_model(algoritma)
+    if None not in (usia, berat_lahir, tinggi_lahir, berat, tinggi):
+        model = load_model(algoritma)
 
-            input_data = [[
-                jenis_kelamin_map[Jenis_Kelamin],
-                Usia,
-                Berat_Badan_Lahir,
-                Tinggi_Badan_Lahir,
-                Berat_Badan,
-                Tinggi_Badan,
-                asi_map[Status_Pemberian_ASI],
-                tinggi_badan_map[Status_Tinggi_Badan],
-                berat_badan_map[Status_Berat_Badan]
-            ]]
+        fitur_input = [[
+            jenis_kelamin_map[jenis_kelamin],
+            usia,
+            berat_lahir,
+            tinggi_lahir,
+            berat,
+            tinggi,
+            asi_map[status_asi],
+            tinggi_badan_map[kondisi_tinggi],
+            berat_badan_map[kondisi_berat]
+        ]]
 
-            hasil = model_prediksi.predict(input_data)
-            gizi_diagnosis = status_gizi_map.get(int(hasil[0]), "Status gizi tidak diketahui")
+        hasil = model.predict(fitur_input)
+        output = status_gizi_map.get(int(hasil[0]), "Tidak diketahui")
 
-            st.markdown(f"<p style='font-size:18px; font-weight:bold; color:black;'>Hasil Prediksi Status Gizi Balita menggunakan <u>{algoritma}</u>: <span style='color:#0d47a1;'>{gizi_diagnosis}</span></p>", unsafe_allow_html=True)
-
-# Tombol Clear
-def clear_inputs():
-    for key in default_values:
-        st.session_state[key] = default_values[key]
-
-st.button("Kosongkan Form untuk Mengisi Kembali", on_click=clear_inputs)
+        st.success(f"Hasil Prediksi Status Gizi Balita dengan **{algoritma}** adalah: **{output}**")
