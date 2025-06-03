@@ -89,9 +89,9 @@ with col2:
     tinggi_saat_ini = st.text_input("Tinggi Badan Saat Ini (cm)", placeholder="Contoh: 75.0")
     st.markdown("<div style='font-size:12px; color:gray; white-space: nowrap;'>Masukkan nilai antara 49.0 hingga 111.0 cm</div>", unsafe_allow_html=True)
 
-    kondisi_tinggi = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["Normal", "Pendek", "Sangat Pendek"])
+    kondisi_tinggi = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["Normal", "Pendek", "Sangat Pendek", "Tinggi"])
 
-    kondisi_berat = st.selectbox("Kondisi Berat Badan Saat Ini", ["Normal", "Kurus", "Sangat Kurus", "Gemuk"])
+    kondisi_berat = st.selectbox("Kondisi Berat Badan Saat Ini", ["Berat badan normal", "Berat badan sangat kurang", "Berat badan kurang", "Risiko berat badan lebih"])
 
 # Mapping data
 jenis_kelamin_map = {'Laki-laki': 0, 'Perempuan': 1}
