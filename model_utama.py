@@ -14,10 +14,10 @@ def load_model(algoritma):
 st.markdown("""
     <style>
         body {
-            background-color: #bbdefb;
+            background-color: #e3f2fd;
         }
         .stApp {
-            background-color: #bbdefb;
+            background-color: #e3f2fd;
         }
         h1, h2, h3, h4, h5, h6 {
             color: #0d47a1;
