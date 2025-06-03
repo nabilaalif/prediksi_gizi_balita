@@ -10,20 +10,6 @@ def load_model(algoritma):
     elif algoritma == "KNN":
         return pickle.load(open("modelKNN_terbaik.sav", "rb"))
 
-st.markdown("""
-    <style>
-        /* Ganti warna teks dan background warning */
-        .stAlert[data-baseweb="alert"] {
-            background-color: #f5f5f5; /* warna abu muda */
-            border-left: 5px solid #0d47a1; /* garis tepi biru gelap */
-        }
-        .stAlert[data-baseweb="alert"] p {
-            color: black !important; /* warna teks */
-            font-weight: bold;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
 # Custom CSS untuk latar belakang dan elemen UI
 st.markdown("""
     <style>
