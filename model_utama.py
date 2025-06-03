@@ -109,12 +109,18 @@ status_gizi_map = {
 
 def convert_and_validate_float(value, min_val, max_val, field_name):
     try:
-        val = float(value.replace(',', '.'))  # Mengatasi input desimal dengan koma
+        val = float(value.replace(',', '.'))
     except ValueError:
-        st.warning(f"Input untuk {field_name} harus berupa angka yang valid.")
+        st.markdown(
+            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus berupa angka yang valid.</div>",
+            unsafe_allow_html=True
+        )
         return None
     if not (min_val <= val <= max_val):
-        st.warning(f"Input untuk {field_name} harus antara {min_val} sampai {max_val}.")
+        st.markdown(
+            f"<div style='padding: 0.5em; background-color: #f0f0f0; color: black; border-left: 5px solid #333;'>⚠️ Input untuk {field_name} harus antara {min_val} sampai {max_val}.</div>",
+            unsafe_allow_html=True
+        )
         return None
     return val
 
