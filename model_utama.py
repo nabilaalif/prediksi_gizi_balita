@@ -70,13 +70,22 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     Jenis_Kelamin = st.selectbox("Pilih Jenis Kelamin", ["", "Laki-laki", "Perempuan"], key="Jenis_Kelamin")
+    
     Usia_input = st.text_input("Masukkan Usia (bulan)", placeholder="Contoh: 24", key="Usia_input")
+    st.caption("Masukkan nilai antara 1 hingga 59 bulan")
+    
     Berat_Badan_Lahir_input = st.text_input("Berat Badan Lahir (kg)", placeholder="Contoh: 3.2", key="Berat_Badan_Lahir_input")
+    st.caption("Masukkan nilai antara 1.8 hingga 4.0 kg")
 
 with col2:
     Tinggi_Badan_Lahir_input = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0", key="Tinggi_Badan_Lahir_input")
+    st.caption("Masukkan nilai antara 42.0 hingga 53.0 cm")
+
     Berat_Badan_input = st.text_input("Berat Badan Saat Ini (kg)", placeholder="Contoh: 12.5", key="Berat_Badan_input")
+    st.caption("Masukkan nilai antara 2.9 hingga 24.5 kg")
+
     Tinggi_Badan_input = st.text_input("Tinggi Badan Saat Ini (cm)", placeholder="Contoh: 75.0", key="Tinggi_Badan_input")
+    st.caption("Masukkan nilai antara 49.0 hingga 111.0 cm")
 
 with col3:
     Status_Pemberian_ASI = st.selectbox("Status Pemberian ASI", ["", "Ya", "Tidak"], key="Status_Pemberian_ASI")
