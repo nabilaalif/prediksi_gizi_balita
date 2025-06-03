@@ -50,15 +50,15 @@ st.markdown("Lakukan pengisian data berikut untuk mengetahui status gizi balita.
 
 # Inisialisasi session state
 default_values = {
-    "Jenis_Kelamin": "",
+    "Jenis_Kelamin": "Laki-laki",
     "Usia_input": "",
     "Berat_Badan_Lahir_input": "",
     "Tinggi_Badan_Lahir_input": "",
     "Berat_Badan_input": "",
     "Tinggi_Badan_input": "",
-    "Status_Pemberian_ASI": "",
-    "Status_Tinggi_Badan": "",
-    "Status_Berat_Badan": ""
+    "Status_Pemberian_ASI": "Ya",
+    "Status_Tinggi_Badan": "Sangat pendek",
+    "Status_Berat_Badan": "Berat badan sangat kurang"
 }
 
 for key in default_values:
@@ -88,9 +88,9 @@ with col2:
     st.markdown("<div style='font-size:14px; color:gray; margin-top: -10px; margin-bottom: 15px;'>Input nilai antara 49.0 hingga 111.0</div>", unsafe_allow_html=True)
 
 with col3:
-    Status_Pemberian_ASI = st.selectbox("Status Pemberian ASI", ["Ya", "Tidak"], index=0, key="Status_Pemberian_ASI")
-    Status_Tinggi_Badan = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["Sangat pendek", "Pendek", "Normal", "Tinggi"], index=0, key="Status_Tinggi_Badan")
-    Status_Berat_Badan = st.selectbox("Kondisi Berat Badan Saat Ini", ["Berat badan sangat kurang", "Berat badan kurang", "Berat badan normal", "Risiko berat badan lebih"], index=0, key="Status_Berat_Badan")
+    Status_Pemberian_ASI = st.selectbox("Status Pemberian ASI", ["Ya", "Tidak"],  key="Status_Pemberian_ASI")
+    Status_Tinggi_Badan = st.selectbox("Kondisi Tinggi Badan Saat Ini", ["Sangat pendek", "Pendek", "Normal", "Tinggi"], key="Status_Tinggi_Badan")
+    Status_Berat_Badan = st.selectbox("Kondisi Berat Badan Saat Ini", ["Berat badan sangat kurang", "Berat badan kurang", "Berat badan normal", "Risiko berat badan lebih"], key="Status_Berat_Badan")
 
 # Mapping data
 jenis_kelamin_map = {'Laki-laki': 0, 'Perempuan': 1}
