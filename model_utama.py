@@ -62,7 +62,7 @@ with col1:
     tinggi_lahir_input = st.text_input("Tinggi Badan Lahir (cm)", placeholder="Contoh: 50.0")
     st.markdown("<div style='font-size:12px; color:gray;'>Masukkan nilai antara 42.0 hingga 53.0 cm</div>", unsafe_allow_html=True)
 
-    status_asi = st.selectbox("Status Pemberian ASI", ["Eksklusif", "Tidak Eksklusif"])
+    status_asi = st.selectbox("Status Pemberian ASI", ["Iya", "Tidak"])
 
 with col2:
     berat_input = st.text_input("Berat Badan Saat Ini (kg)", placeholder="Contoh: 12.5")
